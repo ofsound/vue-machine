@@ -1,0 +1,50 @@
+@layer theme, base, components, utilities;
+
+.preflight {
+  @import 'tailwindcss/preflight.css' layer(base);
+}
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+  --font-alright: 'Alright', 'sans-serif';
+  --color-background: #210346;
+  --color-orange: #eac02c;
+  --color-light-purple: #cfb8ff;
+  --color-dark-background: #180233;
+  --color-site-background: #171c2d;
+  --color-bar-red: #f13333;
+  --color-bar-orange: #e06c31;
+  --color-bar-yellow: #c9a02f;
+  --color-bar-blue: #34b4d0;
+  --color-bar-purple: #8d5cf3;
+  --color-bar-pink: #b22a96;
+  --color-buy-now-yellow: #ffc83b;
+}
+
+@font-face {
+  font-family: 'Alright';
+  font-weight: 400;
+  src: url('https://cdn.alonetone.com/fonts/Alright-v2-Normal-Regular-latin1-tnum.woff2')
+    format('opentype');
+}
+@font-face {
+  font-family: 'Alright';
+  font-weight: 500;
+  src: url('https://cdn.alonetone.com/fonts/Alright-v2-Normal-Medium-latin1-tnum.woff2')
+    format('opentype');
+}
+@font-face {
+  font-family: 'Alright';
+  font-weight: 700;
+  src: url('https://cdn.alonetone.com/fonts/Alright-v2-Normal-Bold-latin1-tnum.woff2')
+    format('opentype');
+}
+
+@font-face {
+  font-family: 'Alright';
+  font-weight: 900;
+  font-style: italic;
+  src: url('https://cdn.alonetone.com/fonts/Alright-v2-Normal-Black-Italic.woff2')
+    format('opentype');
+}
