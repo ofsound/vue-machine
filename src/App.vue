@@ -10,10 +10,10 @@ import PageSandbox from './PageSandbox.vue'
 </script>
 
 <template>
-  <SiteHeader v-if="false" />
+  <SiteHeader v-if="true" />
   <PageDownloads v-if="false" />
-  <PageHome v-if="false" />
-  <SiteFooter v-if="false" />
+  <PageHome v-if="true" />
+  <SiteFooter v-if="true" />
   <ImageTest v-if="false" />
   <ImageDirectoryTest v-if="false" />
   <RemoteSync v-if="true" />

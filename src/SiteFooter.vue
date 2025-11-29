@@ -64,7 +64,9 @@
         </div>
         <div class="mr-0 flex md:mr-2">
           <div class="relative -top-0.5 mr-5 ml-3 shrink-0">
-            <a href="/about/" class="text-white">About</a>
+            <a href="/about/" class="text-white"
+              ><span class="bg-[#123456] text-4xl">Let's Go!!!!</span></a
+            >
           </div>
           <div class="bg-bar-orange mb-3 h-5 w-full">
             <div class="relative -top-[3px] mr-2 ml-auto w-max md:mr-6">
