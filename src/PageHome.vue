@@ -112,7 +112,7 @@
 
     <div class="relative h-[50vh] w-full overflow-hidden">
       <video class="absolute inset-0 h-full w-full object-cover" autoplay loop muted playsinline>
-        <source src="https://melatonin.dev/wp-content/uploads/2025/10/env.mp4" type="video/mp4" />
+        <source src="@/assets/videos/env.mp4" type="video/mp4" />
       </video>
 
       <div
