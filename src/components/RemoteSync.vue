@@ -106,7 +106,7 @@ const updateCSSOnServer = async () => {
       'https://csstune.com/wp-json/my-vue-app/v1/save_css',
       {
         css_content: myCssContent,
-        file_name: 'dot-dev-tailwind-styles.css', // Desired file name
+        file_name: 'tailwind.css',
       },
       {
         headers: {
