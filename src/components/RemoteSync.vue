@@ -44,9 +44,28 @@ const sendHtmlToWordPressTemplatePart = async (
 ) => {
   const componentHtmlRaw = componentForTemplatePartRef.outerHTML
 
-  const componentHtml = componentHtmlRaw.replace(
-    /\/src\/assets\/images\//g,
-    '/wp-content/uploads/custom-css/',
+  function removeDataVInspector(htmlString: string) {
+    // 1. Create a temporary container element
+    const container = document.createElement('div')
+    container.innerHTML = htmlString
+
+    // 2. Find all elements with the 'data-v-inspector' attribute
+    const elementsWithInspector = container.querySelectorAll('[data-v-inspector]')
+
+    // 3. Loop and remove the attribute
+    elementsWithInspector.forEach((element) => {
+      element.removeAttribute('data-v-inspector')
+    })
+
+    // 4. Return the cleaned HTML string
+    return container.innerHTML
+  }
+
+  const cleanHtml = removeDataVInspector(componentHtmlRaw)
+
+  const componentHtml = cleanHtml.replace(
+    /\/src\/assets\//g,
+    '/wp-content/uploads/dot-dev-tailwind/',
   )
 
   const username = 'csstune'
@@ -82,10 +101,32 @@ const sendHtmlToWordPressTemplatePart = async (
 const sendHtmlToWordPressPage = async (postID: number, componentRef: HTMLElement) => {
   const componentHtmlRaw = componentRef.outerHTML
 
-  const componentHtml = componentHtmlRaw.replace(
-    /\/src\/assets\/images\//g,
-    '/wp-content/uploads/custom-css/',
-  )
+  console.log(componentHtmlRaw)
+
+  function removeDataVInspector(htmlString: string) {
+    // 1. Create a temporary container element
+    const container = document.createElement('div')
+    container.innerHTML = htmlString
+
+    // 2. Find all elements with the 'data-v-inspector' attribute
+    const elementsWithInspector = container.querySelectorAll('[data-v-inspector]')
+
+    // 3. Loop and remove the attribute
+    elementsWithInspector.forEach((element) => {
+      element.removeAttribute('data-v-inspector')
+    })
+
+    // 4. Return the cleaned HTML string
+    return container.innerHTML
+  }
+
+  const cleanHtml = removeDataVInspector(componentHtmlRaw)
+
+  const componentHtml = cleanHtml
+    .replace(/\/src\/assets\//g, '/wp-content/uploads/dot-dev-tailwind/')
+    .replace(/autoplay=""/g, 'autoplay')
+    .replace(/loop=""/g, 'loop')
+    .replace(/playsinline=""/g, 'playsinline muted')
 
   try {
     const response = await axios.post(

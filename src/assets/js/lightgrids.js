@@ -1,4 +1,6 @@
 window.addEventListener('load', function () {
+  console.log('lightgrids.js firing up')
+
   for (let i = 1; i < 36; i++) {
     let original = document.getElementById('light0')
     let clone = original.cloneNode(true)

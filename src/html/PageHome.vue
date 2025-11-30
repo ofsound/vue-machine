@@ -84,10 +84,7 @@
 
     <div class="relative h-[50vh] w-full overflow-hidden">
       <video class="absolute inset-0 h-full w-full object-cover" autoplay loop muted playsinline>
-        <source
-          src="https://melatonin.dev/wp-content/uploads/2025/10/trem3kbps.mp4"
-          type="video/mp4"
-        />
+        <source src="@/assets/videos/trem3kbps.mp4" type="video/mp4" />
       </video>
 
       <div
@@ -139,10 +136,7 @@
 
     <div class="relative h-[70vh] w-full overflow-hidden">
       <video class="absolute inset-0 h-full w-full object-cover" autoplay loop muted playsinline>
-        <source
-          src="https://melatonin.dev/wp-content/uploads/2025/10/harmonic-bars.mp4"
-          type="video/mp4"
-        />
+        <source src="@/assets/videos/harmonic-bars.mp4" type="video/mp4" />
       </video>
 
       <div
@@ -175,7 +169,7 @@
 
     <div class="relative h-[50vh] w-full overflow-hidden">
       <video class="absolute inset-0 h-full w-full object-cover" autoplay loop muted playsinline>
-        <source src="https://melatonin.dev/wp-content/uploads/2025/10/pitch.mp4" type="video/mp4" />
+        <source src="@/assets/videos/pitch.mp4" type="video/mp4" />
       </video>
 
       <div
@@ -527,7 +521,7 @@
       <div class="md:grid md:grid-cols-2 md:gap-x-12 lg:gap-x-20">
         <div class="relative mb-10">
           <img
-            src="./images/kelbin.png"
+            src="@/assets/images/kelbin.png"
             alt=""
             class="border-buy-now-yellow absolute -top-4 -left-4 block aspect-square w-9 rounded-full border-2"
           />
@@ -543,7 +537,7 @@
         </div>
         <div class="relative mb-10">
           <img
-            src="./images/anem0s.png"
+            src="@/assets/images/anem0s.png"
             alt=""
             class="border-buy-now-yellow absolute -top-4 -left-4 block aspect-square w-9 rounded-full border-2"
           />
@@ -558,7 +552,7 @@
         </div>
         <div class="relative mb-10">
           <img
-            src="./images/kelbin.png"
+            src="@/assets/images/kelbin.png"
             alt=""
             class="border-buy-now-yellow absolute -top-4 -left-4 block aspect-square w-9 rounded-full border-2"
           />
@@ -574,7 +568,7 @@
         </div>
         <div class="relative mb-10">
           <img
-            src="./images/kelbin.png"
+            src="@/assets/images/kelbin.png"
             alt=""
             class="border-buy-now-yellow absolute -top-4 -left-4 block aspect-square w-9 rounded-full border-2"
           />
