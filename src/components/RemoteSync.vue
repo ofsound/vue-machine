@@ -2,16 +2,6 @@
 import axios from 'axios'
 import { ref, toRaw, type Component } from 'vue'
 
-import SiteHeader from '@/html/SiteHeader.vue'
-import SiteFooter from '@/html/SiteFooter.vue'
-import PageHome from '@/html/PageHome.vue'
-import PageDownloads from '@/html/PageDownloads.vue'
-import PageSandbox from '@/html/PageSandbox.vue'
-
-import myCssContent from '@/main.css?inline'
-
-const selectedFiles: File[] = []
-
 interface ComponentObject {
   label: string
   component: Component
@@ -24,19 +14,41 @@ interface ComponentObjectForTemplateParts {
   templateID: string
 }
 
-const componentObjects: ComponentObject[] = [
-  { label: 'Home', component: PageHome, postID: 2866 },
-  { label: 'Downloads', component: PageDownloads, postID: 6381 },
-  { label: 'Sandbox', component: PageSandbox, postID: 6504 },
-]
+import myCssContent from '@/main.css?inline'
+
+import SiteHeader from '@/html/SiteHeader.vue'
+import SiteFooter from '@/html/SiteFooter.vue'
+
+import PageHome from '@/html/PageHome.vue'
+import PageDownloads from '@/html/PageDownloads.vue'
+import PageSandbox from '@/html/PageSandbox.vue'
 
 const componentObjectsForTemplateParts: ComponentObjectForTemplateParts[] = [
   { label: 'Header', component: SiteHeader, templateID: 'header' },
   { label: 'Footer', component: SiteFooter, templateID: 'footer' },
 ]
 
+const componentObjects: ComponentObject[] = [
+  { label: 'Home', component: PageHome, postID: 2866 },
+  { label: 'Downloads', component: PageDownloads, postID: 6381 },
+  { label: 'Sandbox', component: PageSandbox, postID: 6476 },
+]
+
+const selectedFiles: File[] = []
+
 const componentRefs = ref<HTMLElement[]>([])
 const componentForTemplatePartRefs = ref<HTMLElement[]>([])
+
+const username = 'csstune'
+
+const password = import.meta.env.VITE_WP_REST_API_PASSWORD
+// const secret = import.meta.env.VITE_WP_REST_API_SECRET
+
+const staging_user = 'admin'
+const staging_password = 'hwgletsgohwgletsgo'
+
+const credentials = `${username}:${password}`
+const encodedCredentials = btoa(credentials)
 
 const sendHtmlToWordPressTemplatePart = async (
   templateID: string,
@@ -45,19 +57,15 @@ const sendHtmlToWordPressTemplatePart = async (
   const componentHtmlRaw = componentForTemplatePartRef.outerHTML
 
   function removeDataVInspector(htmlString: string) {
-    // 1. Create a temporary container element
     const container = document.createElement('div')
     container.innerHTML = htmlString
 
-    // 2. Find all elements with the 'data-v-inspector' attribute
     const elementsWithInspector = container.querySelectorAll('[data-v-inspector]')
 
-    // 3. Loop and remove the attribute
     elementsWithInspector.forEach((element) => {
       element.removeAttribute('data-v-inspector')
     })
 
-    // 4. Return the cleaned HTML string
     return container.innerHTML
   }
 
@@ -68,20 +76,13 @@ const sendHtmlToWordPressTemplatePart = async (
     '/wp-content/uploads/dot-dev-tailwind/',
   )
 
-  const username = 'csstune'
-
-  const password = import.meta.env.VITE_WP_REST_API_PASSWORD
-
-  const credentials = `${username}:${password}`
-  const encodedCredentials = btoa(credentials)
-
   const templateData = {
     content: componentHtml,
   }
 
   try {
     const response = await axios.post(
-      'https://csstune.com/wp-json/wp/v2/template-parts/lean-and-mean/' + templateID,
+      'https://staging.melatonin.dev/wp-json/wp/v2/template-parts/lean-and-mean/' + templateID,
       templateData,
       {
         headers: {
@@ -91,7 +92,7 @@ const sendHtmlToWordPressTemplatePart = async (
     )
     console.log('Template created successfully:', response.data)
 
-    appendToLog(response.data.id)
+    appendToLog('HTML saved successfully!')
   } catch (error) {
     console.error('Error sending HTML:', error)
     console.error('Error creating template:')
@@ -125,13 +126,19 @@ const sendHtmlToWordPressPage = async (postID: number, componentRef: HTMLElement
 
   try {
     const response = await axios.post(
-      'https://csstune.com/wp-json/my-vue-app/v1/save-component-html',
+      'https://staging.melatonin.dev/wp-json/my-vue-app/v1/save-component-html',
       { html_content: componentHtml, page_id: postID },
+      {
+        auth: {
+          username: staging_user,
+          password: staging_password,
+        },
+      },
     )
     console.log(response.data)
-    appendToLog(response.data)
+    appendToLog('HTML saved successfully!')
   } catch (error) {
-    console.error('Error sending HTML:', error)
+    console.error('Error sending HTML!', error)
     appendToLog('Error sending HTML')
   }
 }
@@ -139,19 +146,24 @@ const sendHtmlToWordPressPage = async (postID: number, componentRef: HTMLElement
 const updateCSSOnServer = async () => {
   try {
     const response = await axios.post(
-      'https://csstune.com/wp-json/my-vue-app/v1/save_css',
+      'https://staging.melatonin.dev/wp-json/my-vue-app/v1/save_css',
       {
         css_content: myCssContent,
         file_name: 'tailwind.css',
       },
       {
+        auth: {
+          username: staging_user,
+          password: staging_password,
+        },
+
         headers: {
           'Content-Type': 'application/json',
         },
       },
     )
     console.log('CSS saved successfully:', response.data.file_url)
-    appendToLog('CSS saved successfully:')
+    appendToLog('CSS saved successfully!')
   } catch (error) {
     console.error('Error saving CSS:', error)
     appendToLog('Error saving CSS')
@@ -200,7 +212,6 @@ const syncAssets = async () => {
 
   const promises = assetObjects.map(async (element) => {
     const response = await fetch(element.url as string)
-    console.log(response)
 
     const blob = await response.blob()
     const file = new File([blob], getFileNameFromPath(element.path), {
@@ -233,10 +244,12 @@ const syncAssets = async () => {
     formData.append('directory', directory)
     try {
       const response = await axios.post(
-        'https://csstune.com/wp-json/my-vue-app/v1/save_asset',
+        'https://staging.melatonin.dev/wp-json/my-vue-app/v1/save_asset',
         formData,
         {
           headers: {
+            // 'X-WP-Nonce': secret,
+            Authorization: 'Basic YWRtaW46aHdnbGV0c2dvaHdnbGV0c2dv',
             'Content-Type': 'multipart/form-data',
           },
         },
@@ -262,17 +275,8 @@ const appendToLog = (message: string) => {
 </script>
 
 <template>
-  <div class="text-white">
-    <div class="text-3xl text-white">Sync to Melatonin.dev</div>
-
-    <div
-      id="log-container"
-      class="h-50 overflow-y-scroll rounded bg-gray-800 p-2 font-mono text-sm text-green-500"
-    >
-      <ul id="log-output"></ul>
-    </div>
-
-    <div class="mt-4 mb-2 text-lg">Sync Page & All Assets</div>
+  <div class="flex h-full flex-col px-8 py-4 text-white">
+    <div class="mt-4 mb-2 text-xl">Sync Page & All Assets</div>
 
     <div v-for="(item, index) in componentObjectsForTemplateParts" :key="item.templateID">
       <button
@@ -284,7 +288,7 @@ const appendToLog = (message: string) => {
           updateCSSOnServer(),
           syncAssets())
         "
-        class="mr-4 underline"
+        class="mr-4 min-w-22 cursor-pointer text-left hover:underline"
       >
         {{ item.label }}
       </button>
@@ -298,11 +302,22 @@ const appendToLog = (message: string) => {
           updateCSSOnServer(),
           syncAssets())
         "
-        class="mr-4 underline"
+        class="mr-4 min-w-22 cursor-pointer text-left hover:underline"
       >
         {{ item.label }}
       </button>
-      => &nbsp;&nbsp;&nbsp;<span>{{ item.postID }}</span>
+      => &nbsp;&nbsp;&nbsp;<a
+        :href="'https://staging.melatonin.dev/?page_id=' + item.postID"
+        class="cursor-pointer hover:underline"
+        >staging.melatonin.dev?page_id={{ item.postID }}</a
+      >
+    </div>
+
+    <div
+      id="log-container"
+      class="mt-4 flex-1 overflow-y-scroll rounded bg-gray-800 p-2 font-mono text-xs text-green-500"
+    >
+      <ul id="log-output"></ul>
     </div>
   </div>
 

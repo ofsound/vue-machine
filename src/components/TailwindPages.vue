@@ -11,5 +11,5 @@ import SiteFooter from '@/html/SiteFooter.vue'
   <PageHome v-if="1" />
   <PageDownloads v-if="0" />
   <PageSandbox v-if="0" />
-  <SiteFooter v-if="1" />
+  <SiteFooter v-if="0" />
 </template>

@@ -4,7 +4,7 @@
       Sine Machine
     </h1>
     <h2 class="text-light-purple px-5 text-center text-2xl lg:px-0 lg:text-3xl">
-      is an additive synthesizer
+      is an additive synthesizer <span class="text-[#432987]">(here we go)</span>
     </h2>
 
     <div class="relative">
