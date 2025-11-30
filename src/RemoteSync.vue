@@ -8,6 +8,8 @@ import PageHome from './PageHome.vue'
 import PageDownloads from './PageDownloads.vue'
 import PageSandbox from './PageSandbox.vue'
 
+const selectedFiles: File[] = []
+
 interface ComponentObject {
   label: string
   component: Component
@@ -19,12 +21,6 @@ interface ComponentObjectForTemplateParts {
   component: Component
   templateID: string
 }
-
-// const headerID = ref(130)
-// const footerID = ref(130)
-// const homeID = ref(130)
-// const downloadsID = ref(6381)
-// const sandboxID = ref(6504)
 
 const componentObjects: ComponentObject[] = [
   { label: 'Home', component: PageHome, postID: 2866 },
@@ -61,7 +57,6 @@ const sendHtmlToWordPressTemplatePart = async (
 
   const templateData = {
     content: componentHtml,
-    // Add other template properties as needed, e.g., 'status', 'type'
   }
 
   try {
@@ -85,8 +80,6 @@ const sendHtmlToWordPressTemplatePart = async (
 }
 
 const sendHtmlToWordPressPage = async (postID: number, componentRef: HTMLElement) => {
-  // const componentHtmlRaw = sandBoxRoot.value!.root.outerHTML
-
   const componentHtmlRaw = componentRef.outerHTML
 
   const componentHtml = componentHtmlRaw.replace(
@@ -121,7 +114,7 @@ const updateCSSOnServer = async () => {
         },
       },
     )
-    console.log('CSS saved successfully:', response.data)
+    console.log('CSS saved successfully:', response.data.file_url)
     appendToLog('CSS saved successfully:')
   } catch (error) {
     console.error('Error saving CSS:', error)
@@ -129,13 +122,108 @@ const updateCSSOnServer = async () => {
   }
 }
 
+const syncAssets = async () => {
+  function getFileNameFromPath(pathString: string) {
+    const lastSlashIndex = pathString.lastIndexOf('/')
+    if (lastSlashIndex === -1) {
+      return pathString
+    } else {
+      return pathString.substring(lastSlashIndex + 1)
+    }
+  }
+
+  function getMimeTypeFromPath(pathString: string) {
+    const parts = pathString.split('.')
+    const extension = parts.pop()
+
+    let mimeType = ''
+
+    if (extension === 'png') {
+      mimeType = 'image/png'
+    } else if (extension === 'jpg') {
+      mimeType = 'image/jpeg'
+    } else if (extension === 'svg') {
+      mimeType = 'image/svg+xml'
+    } else if (extension === 'mp4') {
+      mimeType = 'video/mp4'
+    } else if (extension === 'js') {
+      mimeType = 'text/javascript'
+    }
+
+    return mimeType
+  }
+
+  const assetGlobs = import.meta.glob(
+    ['@/assets/images/*.{png,jpg,svg}', '@/assets/videos/*.mp4', '@/assets/js/*.js'],
+    {
+      eager: true,
+      query: '?url',
+      import: 'default',
+    },
+  )
+
+  const assetObjects = Object.keys(assetGlobs).map((path) => ({
+    path: path,
+    url: assetGlobs[path],
+  }))
+
+  const promises = assetObjects.map(async (element) => {
+    const response = await fetch(element.url as string)
+    const blob = await response.blob()
+    const file = new File([blob], getFileNameFromPath(element.path), {
+      type: getMimeTypeFromPath(element.path),
+    })
+    selectedFiles.push(file)
+  })
+
+  await Promise.all(promises)
+
+  selectedFiles.forEach(async (file) => {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    let directory = ''
+
+    if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/svg+xml') {
+      directory = 'images'
+    }
+
+    if (file.type === 'video/mp4') {
+      directory = 'videos'
+    }
+
+    if (file.type === 'text/javascript') {
+      directory = 'js'
+    }
+
+    formData.append('directory', directory)
+    try {
+      const response = await axios.post(
+        'https://csstune.com/wp-json/my-vue-app/v1/save_asset',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      console.log('Asset saved successfully:', response.data)
+      appendToLog('Asset saved successfully:' + response.data.file_url)
+    } catch (error) {
+      console.error('Error saving File:', error)
+      appendToLog('Error saving File:')
+    }
+  })
+}
+
 const appendToLog = (message: string) => {
+  const logContainer = document.getElementById('log-container')
   const logOutput = document.getElementById('log-output')
   const listItem = document.createElement('li')
   listItem.textContent = message
   logOutput!.appendChild(listItem)
 
-  logOutput!.scrollTop = logOutput!.scrollHeight
+  logContainer!.scrollTop = logContainer!.scrollHeight
 }
 </script>
 
@@ -143,17 +231,21 @@ const appendToLog = (message: string) => {
   <div class="text-white">
     <div class="text-3xl text-white">Sync to Melatonin.dev</div>
 
-    <div class="h-50 overflow-y-scroll rounded bg-gray-800 p-2 font-mono text-sm text-green-500">
+    <div
+      id="log-container"
+      class="h-50 overflow-y-scroll rounded bg-gray-800 p-2 font-mono text-sm text-green-500"
+    >
       <ul id="log-output"></ul>
     </div>
 
-    <div>Sync Page Content</div>
+    <div class="mt-4 mb-2 text-lg">Sync Page & All Assets</div>
 
     <div v-for="(item, index) in componentObjects" :key="item.postID">
       <button
         @click="
           (sendHtmlToWordPressPage(item.postID, componentRefs[index] as HTMLElement),
-          updateCSSOnServer())
+          updateCSSOnServer(),
+          syncAssets())
         "
         class="mr-4 underline"
       >
@@ -169,7 +261,8 @@ const appendToLog = (message: string) => {
             item.templateID,
             componentForTemplatePartRefs[index] as HTMLElement,
           ),
-          updateCSSOnServer())
+          updateCSSOnServer(),
+          syncAssets())
         "
         class="mr-4 underline"
       >
