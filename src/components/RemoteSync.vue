@@ -101,22 +101,16 @@ const sendHtmlToWordPressTemplatePart = async (
 const sendHtmlToWordPressPage = async (postID: number, componentRef: HTMLElement) => {
   const componentHtmlRaw = componentRef.outerHTML
 
-  console.log(componentHtmlRaw)
-
   function removeDataVInspector(htmlString: string) {
-    // 1. Create a temporary container element
     const container = document.createElement('div')
     container.innerHTML = htmlString
 
-    // 2. Find all elements with the 'data-v-inspector' attribute
     const elementsWithInspector = container.querySelectorAll('[data-v-inspector]')
 
-    // 3. Loop and remove the attribute
     elementsWithInspector.forEach((element) => {
       element.removeAttribute('data-v-inspector')
     })
 
-    // 4. Return the cleaned HTML string
     return container.innerHTML
   }
 
@@ -177,19 +171,14 @@ const syncAssets = async () => {
     const parts = pathString.split('.')
     const extension = parts.pop()
 
-    let mimeType = ''
-
-    if (extension === 'png') {
-      mimeType = 'image/png'
-    } else if (extension === 'jpg') {
-      mimeType = 'image/jpeg'
-    } else if (extension === 'svg') {
-      mimeType = 'image/svg+xml'
-    } else if (extension === 'mp4') {
-      mimeType = 'video/mp4'
-    } else if (extension === 'js') {
-      mimeType = 'text/javascript'
+    const mimeTypes = {
+      png: 'image/png',
+      jpg: 'image/jpeg',
+      svg: 'image/svg+xml',
+      mp4: 'video/mp4',
+      js: 'text/javascript',
     }
+    const mimeType = mimeTypes[extension as keyof typeof mimeTypes]
 
     return mimeType
   }
@@ -227,21 +216,19 @@ const syncAssets = async () => {
     formData.append('file', file)
 
     let directory = ''
-
-    if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/svg+xml') {
-      directory = 'images'
+    switch (file.type) {
+      case 'image/png':
+      case 'image/jpeg':
+      case 'image/svg+xml':
+        directory = 'images'
+        break
+      case 'video/mp4':
+        directory = 'videos'
+        break
+      case 'text/javascript':
+        directory = 'js'
+        break
     }
-
-    if (file.type === 'video/mp4') {
-      directory = 'videos'
-    }
-
-    if (file.type === 'text/javascript') {
-      directory = 'js'
-
-      console.log(formData.get('file'))
-    }
-
     formData.append('directory', directory)
     try {
       const response = await axios.post(
@@ -286,20 +273,6 @@ const appendToLog = (message: string) => {
 
     <div class="mt-4 mb-2 text-lg">Sync Page & All Assets</div>
 
-    <div v-for="(item, index) in componentObjects" :key="item.postID">
-      <button
-        @click="
-          (sendHtmlToWordPressPage(item.postID, componentRefs[index] as HTMLElement),
-          updateCSSOnServer(),
-          syncAssets())
-        "
-        class="mr-4 underline"
-      >
-        {{ item.label }}
-      </button>
-      => &nbsp;&nbsp;&nbsp;<span>{{ item.postID }}</span>
-    </div>
-
     <div v-for="(item, index) in componentObjectsForTemplateParts" :key="item.templateID">
       <button
         @click="
@@ -315,6 +288,20 @@ const appendToLog = (message: string) => {
         {{ item.label }}
       </button>
       => &nbsp;&nbsp;&nbsp;<span>{{ item.templateID }}</span>
+    </div>
+
+    <div v-for="(item, index) in componentObjects" :key="item.postID">
+      <button
+        @click="
+          (sendHtmlToWordPressPage(item.postID, componentRefs[index] as HTMLElement),
+          updateCSSOnServer(),
+          syncAssets())
+        "
+        class="mr-4 underline"
+      >
+        {{ item.label }}
+      </button>
+      => &nbsp;&nbsp;&nbsp;<span>{{ item.postID }}</span>
     </div>
   </div>
 
