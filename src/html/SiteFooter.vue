@@ -1,5 +1,4 @@
 <template>
-  <!-- wp:html -->
   <div id="footer">
     <div
       class="font-alright mr-auto ml-auto block w-full max-w-[1130px] text-lg md:flex md:w-10/12"
@@ -143,5 +142,4 @@
       </div>
     </footer>
   </div>
-  <!-- /wp:html -->
 </template>

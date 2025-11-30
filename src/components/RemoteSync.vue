@@ -2,11 +2,13 @@
 import axios from 'axios'
 import { ref, toRaw, type Component } from 'vue'
 
-import SiteHeader from './SiteHeader.vue'
-import SiteFooter from './SiteFooter.vue'
-import PageHome from './PageHome.vue'
-import PageDownloads from './PageDownloads.vue'
-import PageSandbox from './PageSandbox.vue'
+import SiteHeader from '@/html/SiteHeader.vue'
+import SiteFooter from '@/html/SiteFooter.vue'
+import PageHome from '@/html/PageHome.vue'
+import PageDownloads from '@/html/PageDownloads.vue'
+import PageSandbox from '@/html/PageSandbox.vue'
+
+import myCssContent from '@/main.css?inline'
 
 const selectedFiles: File[] = []
 
@@ -35,8 +37,6 @@ const componentObjectsForTemplateParts: ComponentObjectForTemplateParts[] = [
 
 const componentRefs = ref<HTMLElement[]>([])
 const componentForTemplatePartRefs = ref<HTMLElement[]>([])
-
-import myCssContent from './main.css?inline'
 
 const sendHtmlToWordPressTemplatePart = async (
   templateID: string,
