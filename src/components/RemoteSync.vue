@@ -210,6 +210,8 @@ const syncAssets = async () => {
 
   const promises = assetObjects.map(async (element) => {
     const response = await fetch(element.url as string)
+    console.log(response)
+
     const blob = await response.blob()
     const file = new File([blob], getFileNameFromPath(element.path), {
       type: getMimeTypeFromPath(element.path),
@@ -221,6 +223,7 @@ const syncAssets = async () => {
 
   selectedFiles.forEach(async (file) => {
     const formData = new FormData()
+
     formData.append('file', file)
 
     let directory = ''
@@ -235,6 +238,8 @@ const syncAssets = async () => {
 
     if (file.type === 'text/javascript') {
       directory = 'js'
+
+      console.log(formData.get('file'))
     }
 
     formData.append('directory', directory)
