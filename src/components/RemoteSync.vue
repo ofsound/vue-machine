@@ -69,7 +69,8 @@ const sendHtmlToWordPressTemplatePart = async (
   )
 
   const username = 'csstune'
-  const password = 'HUlc HStM UgNJ 9vkK HSev 6ePD'
+
+  const password = import.meta.env.VITE_WP_REST_API_PASSWORD
 
   const credentials = `${username}:${password}`
   const encodedCredentials = btoa(credentials)
