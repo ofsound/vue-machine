@@ -13,7 +13,9 @@
       </div>
       <div class="mr-3 mb-4 ml-auto w-full shrink-0 md:mb-0 md:w-60">
         <div class="bg-bar-red mb-3 h-5 pl-3">
-          <div class="relative -top-[2.5px] font-black text-white italic">Sine Machine</div>
+          <div class="relative -top-[2.5px] font-black text-white italic">
+            Sine Machine : Let's go
+          </div>
         </div>
         <div class="mb-3 flex h-5">
           <div class="relative -top-0.5 mr-5 ml-3 shrink-0">
@@ -63,9 +65,7 @@
         </div>
         <div class="mr-0 flex md:mr-2">
           <div class="relative -top-0.5 mr-5 ml-3 shrink-0">
-            <a href="/about/" class="text-white"
-              ><span class="bg-[#123456] text-4xl">Let's Go!!!!</span></a
-            >
+            <a href="/about/" class="text-white"></a>
           </div>
           <div class="bg-bar-orange mb-3 h-5 w-full">
             <div class="relative -top-[3px] mr-2 ml-auto w-max md:mr-6">

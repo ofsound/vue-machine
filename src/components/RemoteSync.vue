@@ -39,22 +39,22 @@ const selectedFiles: File[] = []
 const componentRefs = ref<HTMLElement[]>([])
 const componentForTemplatePartRefs = ref<HTMLElement[]>([])
 
-const username = 'csstune'
+// const username = 'csstune'
 
-const password = import.meta.env.VITE_WP_REST_API_PASSWORD
+// const password = import.meta.env.VITE_WP_REST_API_PASSWORD
 // const secret = import.meta.env.VITE_WP_REST_API_SECRET
 
 const staging_user = 'admin'
 const staging_password = 'hwgletsgohwgletsgo'
 
-const credentials = `${username}:${password}`
-const encodedCredentials = btoa(credentials)
+// const credentials = `${username}:${password}`
+// const encodedCredentials = btoa(credentials)
 
 const sendHtmlToWordPressTemplatePart = async (
   templateID: string,
   componentForTemplatePartRef: HTMLElement,
 ) => {
-  const componentHtmlRaw = componentForTemplatePartRef.outerHTML
+  const componentHtmlRaw = componentForTemplatePartRef.innerHTML
 
   function removeDataVInspector(htmlString: string) {
     const container = document.createElement('div')
@@ -76,20 +76,31 @@ const sendHtmlToWordPressTemplatePart = async (
     '/wp-content/uploads/dot-dev-tailwind/',
   )
 
-  const templateData = {
-    content: componentHtml,
-  }
+  // const templateData = {
+  //   content: componentHtml,
+  // }
 
   try {
+    // const response = await axios.post(
+    //   'https://staging.melatonin.dev/wp-json/wp/v2/template-parts/lean-and-mean/' + templateID,
+    //   templateData,
+    //   {
+    //     headers: {
+    //       Authorization: `Basic ${encodedCredentials}`,
+    //     },
+    //   },
+    // )
     const response = await axios.post(
-      'https://staging.melatonin.dev/wp-json/wp/v2/template-parts/lean-and-mean/' + templateID,
-      templateData,
+      'https://staging.melatonin.dev/wp-json/my-vue-app/v1/save-component-html-to-template-part',
+      { html_content: componentHtml, page_id: templateID },
       {
-        headers: {
-          Authorization: `Basic ${encodedCredentials}`,
+        auth: {
+          username: staging_user,
+          password: staging_password,
         },
       },
     )
+
     console.log('Template created successfully:', response.data)
 
     appendToLog('HTML saved successfully!')
@@ -101,7 +112,7 @@ const sendHtmlToWordPressTemplatePart = async (
 }
 
 const sendHtmlToWordPressPage = async (postID: number, componentRef: HTMLElement) => {
-  const componentHtmlRaw = componentRef.outerHTML
+  const componentHtmlRaw = componentRef.innerHTML
 
   function removeDataVInspector(htmlString: string) {
     const container = document.createElement('div')

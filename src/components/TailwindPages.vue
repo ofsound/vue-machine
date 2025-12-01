@@ -8,8 +8,8 @@ import SiteFooter from '@/html/SiteFooter.vue'
 
 <template>
   <SiteHeader v-if="0" />
-  <PageHome v-if="1" />
-  <PageDownloads v-if="0" />
+  <PageHome v-if="0" />
+  <PageDownloads v-if="1" />
   <PageSandbox v-if="0" />
   <SiteFooter v-if="0" />
 </template>

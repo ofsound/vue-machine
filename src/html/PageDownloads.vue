@@ -45,25 +45,6 @@
       <div
         class="mx-auto w-9/10 rounded-md bg-[#edebfc] *:border-b *:border-gray-200 *:p-6 *:last:border-0 *:even:bg-gray-200/20"
       >
-        <!-- <div>
-        <div class="mb-1 flex items-baseline gap-1">
-          <div class="text-base font-bold">26.0.31</div>
-          <div>&ndash;</div>
-          <div class="text-sm">Nov 29, 2025</div>
-        </div>
-        <div class="mt-4">
-          <ul class="ml-4 list-outside list-disc text-sm *:mb-2 *:pl-1">
-            <li>
-              ✨Allow for unison spread to change while a note is being held (thx Arden)
-            </li>
-              <li>Fixes crash when `Bluetooth MIDI` is clicked in Standalone (thx @bells)</li>
-              <li>Fixes Pitchbend range for both MIDI 1 and MPE controllers (thx @jl)</li>
-              <li>Fixes Decay/Hold/Release help text for `Low To High` and `High To Low` (thx Julian)</li>
-            </li>
-          </ul>
-        </div>
-      </div>
--->
         <div>
           <div class="mb-1 flex items-baseline gap-1">
             <div class="text-base font-bold">26.0.23</div>
@@ -75,6 +56,7 @@
               <li>
                 Fixes “right channel drops out” issue reported by @James Swift, @Enchse and others
               </li>
+              <li>Whoops, forgot <span class="bg-[#f32091]">something!</span></li>
             </ul>
           </div>
         </div>
