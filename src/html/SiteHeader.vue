@@ -16,7 +16,7 @@
               href="?mb_intent=view_product&mb_product_id=sine-machine-early-access"
               class="text-light-purple text-xl font-medium hover:text-white"
             >
-              Downloads - HWG
+              Downloads
             </a>
             <a
               href="/manuals/sine-machine/"

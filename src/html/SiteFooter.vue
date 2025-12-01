@@ -13,13 +13,11 @@
       </div>
       <div class="mr-3 mb-4 ml-auto w-full shrink-0 md:mb-0 md:w-60">
         <div class="bg-bar-red mb-3 h-5 pl-3">
-          <div class="relative -top-[2.5px] font-black text-white italic">
-            Sine Machine : Let's go
-          </div>
+          <div class="relative -top-[2.5px] font-black text-white italic">Sine Machine</div>
         </div>
         <div class="mb-3 flex h-5">
           <div class="relative -top-0.5 mr-5 ml-3 shrink-0">
-            <a href="#buy-now" class="text-white">Buy Now</a>
+            <a href="#buy-now" class="text-white">Buy Now : There we went</a>
           </div>
           <div class="bg-bar-orange w-full"></div>
         </div>
