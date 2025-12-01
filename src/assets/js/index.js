@@ -1,4 +1,6 @@
 window.addEventListener('load', function () {
+  console.log('index fired up!')
+
   function toggleMenu() {
     const el = document.getElementById('menu-items')
     if (el.style.display == 'flex') {
@@ -156,10 +158,6 @@ window.addEventListener('load', function () {
     ) {
       const parentRect = sliderContainer.getBoundingClientRect()
       const offsetXRelativeToParent = event.clientX - parentRect.left
-
-      function clamp(value, min, max) {
-        return Math.min(Math.max(value, min), max)
-      }
 
       snapThumbAndProgressToTick(getClosestTick(offsetXRelativeToParent / sliderWidth))
 
